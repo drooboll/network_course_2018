@@ -1,0 +1,20 @@
+.header {
+	font-family: Arial, Helvetica;
+	color: aliceblue;
+	text-shadow: 2px 2px 2px black;
+}
+.picture {
+	width: 200px;
+	height: auto;
+}
+.link {
+	font-size: 18px;
+	text-decoration: none;
+	font-weight: 500;
+	color: darkcyan;
+}
+.link:hover {
+	background: #DDE9FF;
+	padding: 2px 2px 2px 2px;
+	border-radius: 2px 2px 2px 2px;
+}

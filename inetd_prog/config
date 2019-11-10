@@ -1,0 +1,4 @@
+TCP 9997 3 cat /home/valery/net/inetd_prog/config
+TCP 8086 1 cat
+UDP 9996 2 cat
+UDP 9995 1 cat /home/valery/net/inetd_prog/config

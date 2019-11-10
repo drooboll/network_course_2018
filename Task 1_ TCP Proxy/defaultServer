@@ -1,0 +1,40 @@
+#!bin/python
+import socket
+import threading
+import select
+
+port = 9997
+defaultUrl = '127.0.0.1'
+defaultAwayPort = 9995
+mainSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+mainSocket.bind(('0.0.0.0', port))
+mainSocket.listen(5)
+
+
+def clientHandler(clientSocket):
+    awaySocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    awaySocket.connect((defaultUrl, defaultAwayPort))
+    exitFlag = False
+    while not exitFlag:
+        read, _, _ = select.select([awaySocket, clientSocket], [awaySocket, clientSocket], [], 5)
+        for sock in read:
+            data = sock.recv(1024)
+            if len(data) == 0:
+                awaySocket.close()
+                clientSocket.close()
+                exitFlag = not exitFlag
+                break
+            if sock == awaySocket:
+                clientSocket.send(sock.recv(1024))
+            else:
+                awaySocket.send(sock.recv(1024))
+
+
+while True:
+    clientSocket, address = mainSocket.accept()
+    print('Connection {}:{}'.format(address[0], address[1]))
+    clientHandler = threading.Thread(
+        target=clientHandler,
+        args=(clientSocket, )
+    )
+    clientHandler.start()
